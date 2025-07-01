@@ -1,0 +1,43 @@
+version: "3.7"
+
+services:
+  app_proxy:
+    environment:
+      APP_HOST: nutshell_web_1
+      APP_PORT: 3338
+      PROXY_AUTH_ADD: "false"
+  
+  web:
+    image: cashubtc/nutshell:0.17.0@sha256:4f201d7d10b017f96ba6fe7a788bdec26aa8c25959f52c2b13bc8b7f193d4799
+    init: true
+    restart: on-failure
+    stop_grace_period: 1m
+    command:
+      - poetry
+      - run
+      - mint
+    volumes:
+      - ${APP_DATA_DIR}/data:/data
+      - ${APP_LIGHTNING_NODE_DATA_DIR}:/lnd:ro
+    environment:
+      # Global
+      MINT_DATABASE: "/data"
+      MINT_LISTEN_PORT: 3338
+      MINT_LISTEN_HOST: 0.0.0.0
+      MINT_PRIVATE_KEY: ${APP_SEED}
+
+      # LND
+      MINT_BACKEND_BOLT11_SAT: LndRestWallet
+      MINT_LND_REST_ENDPOINT: https://$APP_LIGHTNING_NODE_IP:$APP_LIGHTNING_NODE_REST_PORT/
+      MINT_LND_REST_CERT: "/lnd/tls.cert"
+      MINT_LND_REST_MACAROON: "/lnd/data/chain/bitcoin/$APP_BITCOIN_NETWORK/admin.macaroon"
+
+      # App
+      MINT_INFO_NAME: "Umbrel Cashu mint"
+      MINT_INFO_DESCRIPTION: "A cashu mint running on Umbrel"
+      MINT_INFO_DESCRIPTION_LONG: "A cashu mint running on Umbrel"
+      MINT_INFO_URLS: ["http://umbrel.local", "${APP_HIDDEN_SERVICE}"]
+
+     # TOR
+     TOR_PROXY_IP: ${TOR_PROXY_IP}
+     TOR_PROXY_PORT: ${TOR_PROXY_PORT}
