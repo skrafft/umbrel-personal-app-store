@@ -1,0 +1,28 @@
+manifestVersion: 1
+id: v0x-lndk 
+category: bitcoin
+name: LNDK
+version: "0.2.0"
+tagline: 
+description: >-
+  LNDK is a standalone daemon that connects to LND (via its grpc API) that aims to implement bolt 12 functionality externally to LND
+developer: lndk-org 
+website: https://github.com/lndk-org/lndk
+dependencies:
+  - lightning
+repo: https://github.com/lndk-org/lndk
+support: https://github.com/lndk-org/lndk
+port: 3339
+gallery:
+  - 1.jpg
+  - 2.jpg
+  - 3.jpg
+path: ""
+defaultUsername: ""
+defaultPassword: ""
+releaseNotes: >-
+  First release of LNDK for Umbrel
+
+  Full release notes are available at /https://github.com/lndk-org/lndk/releases
+submitter: skrafft
+submission: https://github.com/getumbrel/umbrel/pull/372
